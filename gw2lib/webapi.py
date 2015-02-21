@@ -26,6 +26,9 @@ class SimpleClient(object):
         return SimpleClient(version = self.version, root = self.root + "/" + attrib)
     
     def get_help_url(self):
+        """
+        Guesstimates the gw2 wiki help page for this API endpoint
+        """
         url = self._get_url([], {})
         url = url.replace(self.BASE_URL + "v", "http://wiki.guildwars2.com/wiki/API:")
         return url

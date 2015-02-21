@@ -36,7 +36,8 @@ L = logging.getLogger("gw2lib.simplecache")
 
 class SimpleCache(object):
     """
-    Very simple key -> value cache that resets the cache at X number of entries
+    Very simple key -> value cache that resets the cache at *length* number of entries,
+    and also invalidates entries after *age* time has passed.
     """
     
     oldest = None

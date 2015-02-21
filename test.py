@@ -13,6 +13,7 @@ def test_api():
     
     item = 12452 # Omnomberry Bar
     
+    # Get chatcode for 25 omnomberry bars
     print "25", api2.items(item).name, "has Chatcode:", genItemChatCode(item, 25)
     
     print api2.items(item).name, "is used in recepies:"
@@ -35,11 +36,16 @@ def test_mumble():
     m = GW2MumbleData()
     
     m.update()
+    
+    #Player identity data
     print "Identity", m.identity
+    
+    #Extra data, including map info and client's position and looking direction
     print "Extra", m.extra
     
     print "Player direction X is", m.extra.player_direction.x # x, y, z
 
+    # Listing of various set fields in mumble structure
     for x in ["name", "context", "identity", "description", "uiVersion", "uiTick"]:
         print " *", x, ":", getattr(m.data, x)
     
