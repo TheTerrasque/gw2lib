@@ -36,11 +36,11 @@ class SimpleAPIClient(object):
         url = self._get_url(args, kwargs)
         L.debug("URL: %s", url)
         
-        r = API_CACHE.get(url)
-        if r == None:
+        d = API_CACHE.get(url)
+        if d == None:
             d = urllib2.urlopen(url).read()
-            r = json.loads(d)
-            if isinstance(r, dict):
-                r = Struct(**r)
-            API_CACHE.set(url, r)
+            API_CACHE.set(url, d)
+        r = json.loads(d)
+        if isinstance(r, dict):
+            r = Struct(**r)
         return r

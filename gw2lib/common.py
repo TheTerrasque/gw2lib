@@ -19,11 +19,18 @@ class Struct:
     """
     Dictionary helper class
     """
-    def __init__(self, **entries): 
+    __level = 1
+    
+    def __init__(self, STRUCT_LEVEL=1, **entries):
+        for k, v in entries.iteritems():
+            if isinstance(v, dict):
+                entries[k] = Struct(STRUCT_LEVEL+1, **v)
+        self.__level = STRUCT_LEVEL
         self.__dict__.update(entries)
-        
+    
     def __repr__(self):
-        return 'Struct:\n  %s' % str('\n  '.join('%s : %s' % (k, repr(v)) for (k, v) in self.__dict__.iteritems())) 
+        spc = " " * self.__level * 2
+        return '[Struct]\n' + spc + '%s' % str(('\n' + spc).join('%s : %s' % (k, repr(v)) for (k, v) in self.__dict__.iteritems() if k[0] != "_")) 
 
 L = logging.getLogger("gw2lib.simplecache")
 
