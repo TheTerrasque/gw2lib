@@ -27,6 +27,9 @@ def test_api():
     print "%s Guild ID :" % guild, api1("guild_details", guild_name=guild).guild_id #Alternative access
     print "\nHelp url for api2.items() is", api2.items.get_help_url()
 
+    #Return a dictionary instead of a generic object
+    print api2.dict().items(item)
+
     API_CACHE.save() #Not needed, but with it module can reuse cache between runs
 
 def test_mumble():

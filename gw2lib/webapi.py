@@ -11,6 +11,7 @@ class SimpleClient(object):
     # http://wiki.guildwars2.com/wiki/API:Main
     
     BASE_URL = "https://api.guildwars2.com/"
+    return_struct=True
     
     def _get_url(self, args, kwargs):
         url = self.BASE_URL + self.version + self.root + (args and "/" + "/".join(unicode(asd) for asd in args) or "")
@@ -18,12 +19,17 @@ class SimpleClient(object):
             url = url + "?" + urllib.urlencode(kwargs)
         return url
     
-    def __init__(self, version="v1", root = ""):
+    def __init__(self, version="v1", root = "", as_struct = True):
         self.root = root
         self.version = version
+        self.return_struct = as_struct
+
+    def dict(self):
+        self.return_struct = False
+        return self
 
     def __getattr__(self, attrib):
-        return SimpleClient(version = self.version, root = self.root + "/" + attrib)
+        return SimpleClient(version = self.version, root = self.root + "/" + attrib, as_struct=self.return_struct)
     
     def get_help_url(self):
         """
@@ -46,6 +52,6 @@ class SimpleClient(object):
             API_CACHE.set(url, d)
             
         r = json.loads(d)
-        if isinstance(r, dict):
+        if self.return_struct and isinstance(r, dict):
             r = Struct(**r)
         return r
