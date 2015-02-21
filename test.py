@@ -30,6 +30,9 @@ def test_api():
     #Return a dictionary instead of a generic object
     print api2.dict().items(item)
 
+    #Use an iterable as argument
+    print api2.items(ids=[46731, 50065])
+
     API_CACHE.save() #Not needed, but with it module can reuse cache between runs
 
 def test_mumble():

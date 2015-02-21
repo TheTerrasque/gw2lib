@@ -8,7 +8,7 @@ with Guild Wars 2's json web api.
 
 ## Usage
 
-### API Client
+### Web API Client
 ```
 >>> from gw2lib.webapi import SimpleClient
 >>> api = SimpleClient("v2")
@@ -23,6 +23,58 @@ u'CraftingMaterial'
 >>> api.items(12262).name
 u'Bowl of Grape Pie Filling'
 ```
+
+Documentation for all API calls can be found at http://wiki.guildwars2.com/wiki/API:Main
+
+Mapping the API urls to the client is pretty straight forward. URL parts are either part of the dot path, or as argument to a call. URL parameters are entered as keywords.
+
+Example: http://wiki.guildwars2.com/wiki/API:2/recipes/search
+```
+>>> from gw2lib.webapi import SimpleClient
+>>> c = SimpleClient("v2")
+>>> c.recipes.search(input=46731)
+[7314, 7839, 7840, 7841, 7846, 7847, 7848, 7849, 7850]
+>>> c.recipes("search", input=46731)
+[7314, 7839, 7840, 7841, 7846, 7847, 7848, 7849, 7850]
+>>> c("recipes", "search", input=46731)
+[7314, 7839, 7840, 7841, 7846, 7847, 7848, 7849, 7850]
+>>> c.recipes.search(output=50065)
+[8455, 8459, 8460]
+```
+And for various parameter access:
+```
+>>> print c.items(46731, lang="es").name
+Montón de polvo de hematites
+>>> print c.items(46731).name
+Pile of Bloodstone Dust
+>>> c.items(ids=[46731, 50065])
+[[Structure]
+  restrictions : []
+  name : u'Pile of Bloodstone Dust'
+  level : 0
+  rarity : u'Ascended'
+  vendor_value : 80
+  game_types : [u'Activity', u'Dungeon', u'Pve', u'Wvw']
+  flags : [u'AccountBound', u'NoSalvage', u'NoSell', u'AccountBindOnUse']
+  icon : u'https://render.guildwars2.com/file/1468C6A946BFF0A42CBD08A70E45F8F05851FED0/631480.png'
+  type : u'CraftingMaterial'
+  id : 46731
+  description : u'Refine into bloodstone bricks.',
+  [Structure]
+  restrictions : []
+  name : u'Gift of Blades'
+  level : 0
+  rarity : u'Ascended'
+  vendor_value : 320
+  game_types : [u'Activity', u'Dungeon', u'Pve', u'Wvw']
+  flags : [u'AccountBound', u'NoSalvage', u'AccountBindOnUse']
+  icon : u'https://render.guildwars2.com/file/02F941EE376D490DDD5428294F2EF05EDB07E405/740277.png'
+  type : u'Trophy'
+  id : 50065
+  description : u'A gift of blades used to create Tempered Spinal Blades.']
+>>>
+```
+
 
 ### Mumble client
 ```
