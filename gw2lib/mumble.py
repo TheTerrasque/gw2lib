@@ -40,10 +40,27 @@ def ip_from_long(long):
     return socket.inet_ntoa(struct.pack('<L', long))
 
 class Vector3(object):
-    def __init__(self, data):
-        self.x = data[0]
+    # https://forum-en.guildwars2.com/forum/community/api/Event-Details-API-location-coordinates/first
+    
+    # Mumble uses meter, and x + z for from-above 2d coordinates. GW2 uses inches..
+    # So to be used for mapping, mumble coords have to be converted
+    inches_from_meter = 39.3700787
+    is_meter=True
+    
+    def in_inches(self):
+        """
+        Return numbers in inches instead of meter (only relevant for coordinates, not directions)
+        """
+        if self.is_meter:
+            d = [x * self.inches_from_meter for x in [self.x, self.y, self.z]]
+            return Vector3(d, False)
+        return self
+        
+    def __init__(self, data, is_meter=True):
+        self.x = data[0] 
         self.y = data[1]
         self.z = data[2]
+        self.is_meter = is_meter
         
     def __repr__(self):
         return "[%s,%s,%s]" % (self.x, self.y, self.z)

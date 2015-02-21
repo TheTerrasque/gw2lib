@@ -1,4 +1,4 @@
-from gw2lib.webapi import SimpleAPIClient, API_CACHE
+from gw2lib.webapi import SimpleClient, API_CACHE
 from gw2lib.mumble import GW2MumbleData
 from gw2lib.common import genItemChatCode
 
@@ -8,10 +8,10 @@ def test_api():
     """
     API_CACHE.load() #Not needed, but with it module can reuse cache between runs
     
-    api1 = SimpleAPIClient()
-    api2 = SimpleAPIClient("v2")
+    api2 = SimpleClient("v2") # Using version 2 of the api
+    api1 = SimpleClient() # Uses version 1 of the api by default
     
-    item = 23349
+    item = 12452 # Omnomberry Bar
     
     print "25", api2.items(item).name, "has Chatcode:", genItemChatCode(item, 25)
     
@@ -20,11 +20,11 @@ def test_api():
         item_id = api2.recipes(recipe_id).output_item_id
         print " *", api2.items(item_id).name, "[%s]" % api2.items(item_id).type
 
-    print api2.items(item)
+    guild = "Nectarines"
 
-    print "\nGuild tag:", api1.guild_details(guild_name="Nectarines").tag
-    print "Guild ID :", api1("guild_details", guild_name="Nectarines").guild_id #Alternative access
-    print "Help url for api2.items() is", api2.items.get_help_url()
+    print "\n%s Guild tag:" % guild, api1.guild_details(guild_name=guild).tag
+    print "%s Guild ID :" % guild, api1("guild_details", guild_name=guild).guild_id #Alternative access
+    print "\nHelp url for api2.items() is", api2.items.get_help_url()
 
     API_CACHE.save() #Not needed, but with it module can reuse cache between runs
 
