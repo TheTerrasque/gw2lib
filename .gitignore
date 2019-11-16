@@ -3,3 +3,6 @@
 *.komodoproject
 *.p
 build/
+
+.idea/*
+.pytest_cache/*
